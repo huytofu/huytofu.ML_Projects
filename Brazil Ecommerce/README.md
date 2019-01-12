@@ -13,5 +13,5 @@
 2. ETL project
 3. Utilizing many ML models to perform classification of customer (whether they will return or not after 1st purchase)
 and regression of Future Sales
-4. Building & deploying a neural net using Keras to try solving the problem 
+4. Building & deploying a neural net using Keras to try solving the problem   
 **5. Objective met? FAILED. Though i did learn many things carrying out this  project**
