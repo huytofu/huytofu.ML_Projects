@@ -7,10 +7,11 @@
 
 ## ***Business Objective: To try to predict Future Sales of customers visiting the site based on info gained from their first purchase
 
-## What I have learn't from this project:
+------------------------------------------------------------------------------
+### What I have learnt from this project:
 1. Advanced SQL query technique & ideas
 2. ETL project
 3. Utilizing many ML models to perform classification of customer (whether they will return or not after 1st purchase)
 and regression of Future Sales
 4. Building & deploying a neural net using Keras to try solving the problem 
-5. Objective met? FAILED. Though i did learn many things carrying out this  project
+**5. Objective met? FAILED. Though i did learn many things carrying out this  project**
