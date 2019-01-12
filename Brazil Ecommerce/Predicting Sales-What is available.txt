@@ -1,0 +1,24 @@
+***INSPIRATION: PREDICT FUTURE SALES FOR EACH CUSTOMER BASED ON 1ST PURCHASE
+
+1. Each customer has
+
+At point of 1st purchase
+
+	Continuous vars
+	- Total pending/purchase amount 1st order
+		+ Total price of items
+		+ Freight value	 
+
+	Discrete var
+	- Total num of items purchased 1st order
+	- Categories contained in basket 1st order
+	- Payment method chosen 1st order
+	- Num of Payment installments chosen 1st order
+	- Locations (longitude)
+	- Locations (Latitude)
+
+Somewhere in near future
+	- Order rating
+	- Order review
+	- Timedelta between receiving email and response
+
