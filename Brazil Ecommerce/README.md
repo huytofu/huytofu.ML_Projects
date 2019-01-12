@@ -17,4 +17,4 @@ and regression of Future Sales
 4. Building & deploying a neural net using Keras to try solving the problem  
 
 ### Objective met? FAILED (R2-score approx 0 which is very bad). Though i did learn many things carrying out this project
-### All methods lead to similar R2-score. Refer to the model under "Model & Intermed Data folder" for me details
+### All methods lead to similar R2-score. Refer to the model under "Model & Intermed Data folder" for more details
