@@ -5,7 +5,8 @@
 3. Data schemas in image form
 4. ETL Process: contains Microsoft Visual Studio SISS file describing the ETL process for this project
 
-## ***Business Objective: To try to predict Future Sales of customers visiting the site based on info gained from their first purchase
+## ***Business Objective: To try to predict Future Sales of customers visiting the site based on info (features) gained from their first purchase
+* Please read: What is available.txt for detailed list of known independent features
 
 ------------------------------------------------------------------------------
 ### What I have learnt from this project:
