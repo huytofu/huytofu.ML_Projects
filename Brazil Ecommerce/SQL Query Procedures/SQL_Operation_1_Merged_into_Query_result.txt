@@ -1,0 +1,64 @@
+SELECT 
+       O.[RowNUM]
+      ,O.[order_id]
+      ,O.[customer_id]
+      ,[order_status]
+      ,[order_purchase_timestamp]
+      ,[order_approved_at]
+      ,[order_delivered_carrier_date]
+      ,[order_delivered_customer_date]
+      ,[order_estimated_delivery_date]
+      ,[order_item_id]
+      ,O_I.[product_id]
+      ,[seller_id]
+      ,[shipping_limit_date]
+      ,[price]
+      ,[freight_value]
+      ,P.[product_category_name]
+      ,[product_name_lenght]
+      ,[product_description_lenght]
+      ,[product_photos_qty]
+      ,[product_weight_g]
+      ,[product_length_cm]
+      ,[product_height_cm]
+      ,[product_width_cm]
+      ,[product_category_name_english]
+      ,[payment_sequential]
+      ,[payment_type]
+      ,[payment_installments]
+      ,[payment_value]
+      ,[customer_unique_id]
+      ,C.[customer_zip_code_prefix]
+      ,C.[customer_city]
+      ,C.[customer_state]
+      ,[Lat]
+      ,[Lng]
+      ,[review_id]
+      ,[review_score]
+      ,[review_comment_title]
+      ,[review_comment_message]
+      ,[review_creation_date]
+      ,[review_answer_timestamp]
+  FROM ((((((([OLE DB Destination 0 - Orders] O
+  LEFT JOIN [OLE DB Destination 1 - Order Items] O_I
+  ON O.order_id = O_I.order_id)
+  LEFT JOIN [OLE DB Destination 4 - Order Payments] O_P
+  ON O.order_id = O_P.order_id)
+  LEFT JOIN [OLE DB Destination 7 - Reviews] R
+  ON O.order_id = R.order_id)
+  LEFT JOIN [OLE DB Destination 2 - Products] P
+  ON O_I.product_id = P.product_id)
+  LEFT JOIN [OLE DB Destination 3 - Product Cat] P_C
+  ON P.product_category_name = P_C.product_category_name)
+  LEFT JOIN [OLE DB Destination 5 - Customers] C
+  ON O.customer_id = C.customer_id)
+  LEFT JOIN  
+  (SELECT geolocation_zip_code_prefix, geolocation_city, geolocation_state, 
+	  AVG(geolocation_lat) as Lat, AVG(geolocation_lng) as Lng
+  FROM [Brazil Ecommerce].[dbo].[OLE DB Destination 6 - GeoLoc]
+  GROUP BY geolocation_zip_code_prefix, geolocation_city, geolocation_state) as G
+  ON C.customer_zip_code_prefix = G.geolocation_zip_code_prefix
+  AND C.customer_city = G.geolocation_city
+  AND C.customer_state = G.geolocation_state)
+
+WHERE order_status NOT IN ('canceled','unavailable')
