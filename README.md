@@ -8,4 +8,4 @@
 
 2. Prediction Labels of various water pumps across Tanzania
 **Data provide on Drivendata.org
-**Access https://huytofu.github.io/Water_Pumps_Status_Prediction.html to view the writeup (pictures not loaded). Alternatively, you can download the notebook from the folder
+**Access https://huytofu.github.io/Tanzania_Water_Pumps_Status_Prediction.html to view the writeup (pictures not loaded). Alternatively, you can download the notebook from the folder
