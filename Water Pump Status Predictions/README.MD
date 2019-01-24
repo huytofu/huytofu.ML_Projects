@@ -11,5 +11,5 @@ https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table
   
 ### Please refer to the problem description for list of dependent variables X available for this classification task
 
-# Attained result = 0.7882 in test set. Rank = 1278/6220 (top 25%)
-### Method used = RandomForestClassifier
+# Attained result = 0.8125 in test set. Rank = 794/6220 (top 15%)
+### Method used = GradientBoostingClassifier
