@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>!!!Predicted Rental Rate!!!</title>
+	<style>
+    .large { font-size:40px; color:#0000FF; }
+    .container {
+    text-align: center;
+    background-color: ivory;
+    width: 1600px;
+    margin: 0 auto;
+    border: 2px double black;
+    border-width: 4px;
+    margin-top: 50px;}
+  </style>
+</head>
+
+<body style="font-size:24px">
+	<div class="container">
+		{% block content %}
+		<center>
+			<h2 class="heading-2" style="color:#FF0000">Your proposed property</h2>
+			<li>Title = {{ title|safe }}</li>
+			<li>Area = {{ area|safe }}</li>
+			<li>Price_psf = {{ price_psf|safe }}</li>
+			<li>Amenities = {{ amenities|safe }}</li>
+			<li>District = {{ district|safe }}</li>
+			<li>Number of Beds = {{ numbeds|safe }}</li>
+			<li>Furnishing State = {{ furnishing|safe }}</li>
+			<li>Property Type = {{ proptype|safe }}</li>
+			<li>Lease = {{ lease|safe }}</li>
+			<h2 class="heading-2">Your proposed model</h2>
+			<li>Session = {{ choose_session|safe }}</li>
+			<li>Model = {{ model_choice|safe }}</li>
+			<h2 class="heading-2">In addition, your answer to "Include Amenities as a feature for section 2 & 3?" is</h2>
+			<h2 class="large">{{include_amen|safe}}</h2>
+			<h2 class="heading-2">And...</h2>
+			<li>Trainset RMSE = <b style="color: #FF0000">{{ train_rmse|safe }}</b></li>
+			<li>Trainset R2 = <b style="color: #FF0000">{{ train_r2|safe}}</b></li>
+			Predictions for first 5 entries of train set =
+			<br>
+			{{sample_predictions_train|safe}}
+			<br><br>
+			<li>Testset RMSE = <b style="color: #FF0000">{{ test_rmse|safe }}</b></li>
+			<li>Testset R2 = <b style="color: #FF0000">{{ test_r2|safe}}</b></li>
+			Predictions for first 5 entries of test set =
+			<br>
+			{{sample_predictions_test|safe}}
+			<h2 class="heading-2">And finally...</h2>
+			{{ prediction|safe }}
+			<h2 class="heading-2">is the predicted rental rate of your proposed property</h2>
+		</center>
+		{% endblock %}
+	</div>
+	
+</body>
+
+</html>

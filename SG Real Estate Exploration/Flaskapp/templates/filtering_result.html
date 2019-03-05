@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>!!!Similarity Search Result!!!</title>
+	<style>
+    .large { font-size: 40px; color: #0000FF; }
+    .container {
+    text-align: center;
+    background-color: ivory;
+    width: 1600px;
+    margin: 0 auto;
+    border: 2px double black;
+    border-width: 4px;
+    margin-top: 50px;}
+  </style>
+</head>
+
+<body style="font-size:24px">
+	<div class="container">
+		{% block content %}
+		<center>
+			<h2 class="heading-2" style="color:#FF0000">Your proposed property</h2>
+			{{input|safe}}
+			<h2 class="heading-2">In addition, your answer to "Include Amenities as a feature for section 2 & 3?" is</h2>
+			<h2 class="large">{{include_amen|safe}}</h2>
+			<h2 class="heading-2">Also your specified importance of various features are</h2>
+			<li>Importance of Area_Sqft = {{ Area_Sqft_pref|safe }}</li>
+			<li>Importance of Price_psf = {{ Price_psf_pref|safe }}</li>
+			<li>Importance of RentalRate = {{ RentalRate_pref|safe }}</li>
+			<li>Importance of NumBeds = {{ NumBeds_pref|safe }}</li>
+			<li>Importance of PropertyType = {{ PropertyType_pref|safe }}</li>
+			<li>Importance of District = {{ District_pref|safe }}</li>
+			<li>Importance of Furnishing = {{ Furnishing_pref|safe }}</li>
+			<li>Importance of Lease = {{ Lease_pref|safe }}</li>
+			<li>Importance of Amenities = {{ Amenities_pref|safe }}</li>
+			<h2 class="heading-2-blue">And finally...</h2>
+			{{output|safe}}
+			<h2 class="heading-2">are the 4 closest properties to your proposed property</h2>
+			<h2 class="heading-2" style="color:#FF0000">Visit these properties' URL here!</h2>
+			{{output_Url|safe}}
+		</center>
+		{% endblock %}
+	</div>
+	
+</body>
+
+</html>

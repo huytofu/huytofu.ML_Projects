@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Visualising SG Property</title>
+	<style>
+    .heading-1 { color: #FF0000; }
+    .heading-2 { color: #0000FF; }
+    .heading-3-impt-red { color: #FF0000; }
+    .heading-3-impt-green { color: #115806; }
+    .heading-4 { color: #115806; }
+    .button { font-size:20px; }
+    .input-text {font-size:18px; }
+    .flash {
+    background-color: #FBB0B0;
+    padding: 10px;
+    width: 400px;
+    display: table;
+    margin: auto;}
+    .container {
+    text-align: center;
+    background-color: ivory;
+    width: 1400px;
+    margin: 0 auto;
+    border: 2px double black;
+    border-width: 4px;
+    margin-top: 50px;}
+  </style>
+</head>
+
+<body style="font-size:20px">
+	{% block content %}
+	<h1 class="heading-1">INTRODUCTION</h1>
+	<center>
+		<h3 class="heading-3">
+			Dataset is scrapped from SG Property site <b style="font-size:36px;color:#0000FF">www.99.co - Rent Section</b><br>
+			On 26-Feb-2019<br>
+			Interactive Webapp Made by <b style="font-size:28px">TO PHUNG HUY</b>
+		</h3>
+		<h3 class="heading-3-impt-green">Contact me at: https://www.linkedin.com/in/huytoryan/</h3>
+	</center>
+	************************************************************************************************************************************************************************************************************************************
+	<h1 class="heading-1">SECTION 1</h1>
+	<div class="container">
+		<center>
+			<h2 class="heading-2">Modify the Dataset as you wish!</h2>
+			<h4>
+				Current Min for All = 0 SGD/month. Max for All = 60000 SGD/month<br>
+			</h4>
+			<h4 class="heading-4">
+				Current Dataset scrapped from "Whole Unit" Section<br> 
+				However, it still contains many entries advertising room-only rentals<br>
+				(due to posters specifying wrongly or not specifying)<br>
+			</h4>
+			<h4>
+				Modifying RentalRate to be at 2000 SGD/month or above should filter out these entries
+			</h4>
+		</center>
+		{% for message in form1.Condo_Rent_Min.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form1.Condo_Rent_Max.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form1.Landed_Rent_Min.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form1.Landed_Rent_Max.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form1.HDB_Rent_Min.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form1.HDB_Rent_Max.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		<form method=post>
+			<input type="hidden" name="form_name" value="form1">
+			<center>
+				{{ form1.Condo_Rent_Min.label }}
+				{{ form1.Condo_Rent_Min(class_="input-text") }}
+				{{ form1.Condo_Rent_Max.label }}
+				{{ form1.Condo_Rent_Max(class_="input-text") }}
+				<br>
+				{{ form1.Landed_Rent_Min.label }}
+				{{ form1.Landed_Rent_Min(class_="input-text") }}
+				{{ form1.Landed_Rent_Max.label }}
+				{{ form1.Landed_Rent_Max(class_="input-text") }}
+				<br>
+				{{ form1.HDB_Rent_Min.label }}
+				{{ form1.HDB_Rent_Min(class_="input-text") }}
+				{{ form1.HDB_Rent_Max.label }}
+				{{ form1.HDB_Rent_Max(class_="input-text") }}
+				<br>
+				<h2 class="heading-2"><center>Features for Interactive Plots of Numerical Attributes based on Property Type</center></h2>
+				<label for="property_type">Property Type for Scatter Plot</label>
+				<select style="font-size:18px", id="property_type" name="property_type">
+					<option value="condo">condo</option>
+					<option value="landed">landed</option>
+					<option value="hdb">hdb</option>
+				</select>
+				<br>
+				<label for="feature_1">Feature 1 for Scatter Plot</label>
+				<select style="font-size:18px", id="feature_1" name="feature_1">
+					<option value="Price_psf">Price_psf</option>
+					<option value="Area_Sqft">Area_Sqft</option>
+					<option value="RentalRate">RentalRate</option>
+				</select>
+				<br>
+				<label for="feature_2">Feature 2 for Scatter Plot</label>
+				<select style="font-size:18px", id="feature_2" name="feature_2">
+					<option value="Price_psf">Price_psf</option>
+					<option value="Area_Sqft">Area_Sqft</option>
+					<option value="RentalRate">RentalRate</option>
+				</select>
+				<br>
+				<label for="feature_3">Feature for Bar Charts</label>
+				<select style="font-size:18px", id="feature_3" name="feature_3">
+					<option value="Price_psf">Price_psf</option>
+					<option value="Area_Sqft">Area_Sqft</option>
+					<option value="RentalRate">RentalRate</option>
+				</select>
+
+				<p>{{ form1.submit(class_="button") }}</p>
+				<h3 class="heading-3">Status = {{ display_text }}</h3>
+				<h3 class="heading-4">Ready To Plot Charts = {{plot_charts_cue}}</h3>
+			</center>
+		</form>
+	</div>
+	<div class=container>
+		<form method=post action="/hahaha" redirect="/hahaha" data-redirect="/hahaha">
+			<input type="hidden" name="form_name" value="form4">
+			<center><h3 class="heading-3">Click {{form4.submit_chart(class_="button")}} to see interactive charts</h3></center>
+		</form>
+		{% block chart %}
+		<h2>
+			<center class="heading-2">Scatter Plot of all numerical features for all property types</center>
+		</h2>
+		<center><img src={{img_src|safe}}></center>
+		<br>
+		{% endblock %}
+	</div>
+	************************************************************************************************************************************************************************************************************************************
+	<h2 class="heading-2">MINI SECTION</h2>
+	<div class=container>
+		<form method=post>
+			<input type="hidden" name="form_name" value="form_amen">
+			<center>
+				<h3 class="heading-3-impt-red">Important!!! Please Specify Before Continuing</h3>
+				<label for="include_amen">Would you like to include Amenities as a feature for Section 2 & 3?</label>
+				<select style="font-size:18px", id="include_amen" name="include_amen">
+					<option value="Y">Y</option>
+					<option value="N">N</option>
+				</select>
+				<h3 class="heading-3">Click {{form_amen.submit_choice(class_="button")}} to submit your choice</h3>
+				<h3 class="heading-3">--{{ display_thankyou }}--</h3>
+			</center>
+		</form>
+	</div>			
+	************************************************************************************************************************************************************************************************************************************
+	<h1 class="heading-1">SECTION 2</h1>
+	<div class="container">
+		<h2>
+			<center class="heading-2">Predicting Rental Rate of a proposed property by the user</center>
+		</h2>
+
+		{% for message in form2.NumNeighbors.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.SigLevel.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.NumTrees_A.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.MaxDepth_A.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.NumTrees_B.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.MaxDepth_B.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.ListingTitle_A.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.Area_Sqft_A.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form2.Price_psf_A.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		<form method='POST'>
+			<input type="hidden" name="form_name" value="form2">
+			<center>
+				<h3 class="heading-3-impt-red">Important questions! Must answer!</h3>
+				<label for="choose_session">Choice of session type (Sklearn/Pyspark)</label>
+				<select style="font-size:18px", id="choose_session" name="choose_session">
+					<option value=None>--Please choose--</option>
+					<option value="Sklearn">Sklearn</option>
+					<option value="Pyspark">Pyspark</option>
+				</select>
+				<br>
+				<label for="model_choice_sklearn">Model Choice If Sklearn Session is chosen (Required)</label>
+				<select style="font-size:18px", id="model_choice_sklearn" name="model_choice_sklearn">
+					<option value=None>--Please choose--</option>
+					<option value="KNN">KNN</option>
+					<option value="Linear">Linear</option>
+					<option value="Quadratic">Quadratic</option>
+					<option value="RandomForest">RandomForest</option>
+					<option value="GBT">GBT</option>
+				</select>
+				<br>
+				<label for="model_choice_pyspark">Model Choice If Pyspark Session is chosen (Required)</label>
+				<select style="font-size:18px", id="model_choice_pyspark" name="model_choice_pyspark">
+					<option value=None>--Please choose--</option>
+					<option value="Linear">Linear</option>
+					<option value="RandomForest">RandomForest</option>
+					<option value="GBT">GBT</option>
+				</select>
+				
+				<h3 class="heading-3">Let's specify parameters for our model (Please choose fore relevant model only)</h3>
+				<h4 class="heading-4">If Model Choice = KNN</h4>
+
+				{{form2.NumNeighbors.label}}
+				{{form2.NumNeighbors(class_="input-text")}}
+
+				<h4 class="heading-4">If Model Choice = Linear/Quadratic</h4>
+
+				{{form2.SigLevel.label}}
+				{{form2.SigLevel(class_="input-text")}}
+				<br>
+				{{form2.RegParam.label}}
+				{{form2.RegParam(class_="input-text")}}
+				<br>
+				<label for="Regularizor">Please choose your regularizor (Ridge/Lasso)</label>
+				<select style="font-size:18px", id="Regularizor" name="Regularizor">
+					<option value=None>--Please choose--</option>
+					<option value="Ridge">Ridge</option>
+					<option value="Lasso">Lasso</option>
+				</select>
+
+				<h4 class="heading-4">If Model Choice = RandomForest</h4>
+
+				{{form2.NumTrees_A.label}}
+				{{form2.NumTrees_A(class_="input-text")}}
+				<br>
+				{{form2.MaxDepth_A.label}}
+				{{form2.MaxDepth_A(class_="input-text")}}
+				<br>
+				<label for="FeatureStrat">Please choose splitting strategy for trees</label>
+				<select style="font-size:18px", id="FeatureStrat" name="FeatureStrat">
+					<option value=None>--Please choose--</option>
+					<option value="sqrt">sqrt</option>
+					<option value="auto">auto</option>
+				</select>
+
+				<h4 class="heading-4">If Model Choice = QBT</h4>
+
+				{{form2.NumTrees_B.label}}
+				{{form2.NumTrees_B(class_="input-text")}}
+				<br>
+				{{form2.MaxDepth_B.label}}
+				{{form2.MaxDepth_B(class_="input-text")}}
+
+				<h3 class="heading-3">Let's input attributes of your proposed property (Required)</h3>
+
+				{{form2.ListingTitle_A.label}}
+				{{form2.ListingTitle_A(class_="input-text")}}
+				<br>
+				{{form2.Area_Sqft_A.label}}
+				{{form2.Area_Sqft_A(class_="input-text")}}
+				<br>
+				{{form2.Price_psf_A.label}}
+				{{form2.Price_psf_A(class_="input-text")}}
+				<br>
+				{{form2.Amenities_A.label}}
+				{{form2.Amenities_A(class_="input-text")}}
+				<br>
+				<label for="NumBeds_A">Number of bedrooms of your property</label>
+				<select style="font-size:18px", id="NumBeds_A" name="NumBeds_A">
+					<option value=1>1</option>
+					<option value=2>2</option>
+					<option value=3>3</option>
+					<option value=4>4</option>
+					<option value=5>5</option>
+					<option value=6>6</option>
+					<option value=7>7</option>
+					<option value=8>8</option>
+				</select>
+				<br>
+				<label for="District_A">District of your property</label>
+				<select style="font-size:18px", id="District_A" name="District_A">
+					<option value="01">01</option>
+					<option value="02">02</option>
+					<option value="03">03</option>
+					<option value="04">04</option>
+					<option value="05">05</option>
+					<option value="06">06</option>
+					<option value="07">07</option>
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+					<option value="19">19</option>
+					<option value="20">20</option>
+					<option value="21">21</option>
+					<option value="22">22</option>
+					<option value="23">23</option>
+					<option value="24">24</option>
+					<option value="25">25</option>
+					<option value="26">26</option>
+					<option value="27">27</option>
+					<option value="28">28</option>
+					<option value="No Mention">Unknown/NoAnswer</option>
+				</select>
+				<br>
+				<label for="Furnishing_A">Furnishing state of your property</label>
+				<select style="font-size:18px", id="Furnishing_A" name="Furnishing_A">
+					<option value="Fully Furnished">Fully Furnished</option>
+					<option value="Partially Furnished">Partially Furnished</option>
+					<option value="Unfurnished">Unfurnished</option>
+					<option value="Flexible">Flexible</option>
+					<option value="No Mention">Unknown/NoAnswer</option>
+				</select>
+				<br>
+				<label for="Leasedur_A">Lease duration of your property </label>
+				<select style="font-size:18px", id="Leasedur_A" name="Leasedur_A">
+					<option value="6 months">6 months</option>
+					<option value="12 months">12 months</option>
+					<option value="24 months">24 months</option>
+					<option value="Flexible">Flexible</option>
+				</select>
+				<br>
+				<label for="PropertyType_A">Type of your property</label>
+				<select style="font-size:18px", id="PropertyType_A" name="PropertyType_A">
+					<option value="condo">condo</option>
+					<option value="landed">landed</option>
+					<option value="hdb">hdb</option>
+				</select>
+				<p>{{ form2.submit_A(class_="button") }}</p>
+				<br><br>
+			</center>		
+		</form>
+	</div>
+	************************************************************************************************************************************************************************************************************************************
+	<h1 class="heading-1">SECTION 3</h1>
+	<div class="container">
+		<h2>
+			<center class="heading-2">Searching for similar properties to a proposed property by the user</center>
+		</h2>
+		
+		{% for message in form3.ListingTitle_B.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form3.Area_Sqft_B.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form3.Price_psf_B.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% for message in form3.RentalRate.errors %}
+		<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		<form method='POST'>
+			<input type="hidden" name="form_name" value="form3">
+			<center>
+				<h3 class="heading-3">Let's first determine the importance of attributes<br></h3>
+				<h4 class="heading-4">
+					Normal : (Weight = 1)<br>
+					NotRelevant : (Weight = 0.005)<br>
+					VeryLow : (Weight = 0.25)<br>
+					Low : (Weight = 0.5)<br>
+					High : (Weight = 2)<br>
+					VeryHigh : (Weight = 4)<br>
+					AsCloseAsPossible : (Weight = 200)<br>
+					MustBeSimilar : (Weight = 10000)
+				</h4>
+				<br>
+				<label for="Area_Sqft_Importance">Importance of Area_Sqft feature (Default=Normal)</label>
+				<select style="font-size:18px", id="Area_Sqft_Importance" name="Area_Sqft_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="Price_psf_Importance">Importance of Price_psf feature (Default=Normal)</label>
+				<select style="font-size:18px", id="Price_psf_Importance" name="Price_psf_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="RentalRate_Importance">Importance of RentalRate feature (Default=Normal)</label>
+				<select style="font-size:18px", id="RentalRate_Importance" name="RentalRate_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="NumBeds_Importance">Importance of NumBeds feature (Default=Normal)</label>
+				<select style="font-size:18px", id="NumBeds_Importance" name="NumBeds_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="PropertyType_Importance">Importance of PropertyType feature (Default=Normal)</label>
+				<select style="font-size:18px", id="PropertyType_Importance" name="PropertyType_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="District_Importance">Importance of District feature (Default=Normal)</label>
+				<select style="font-size:18px", id="District_Importance" name="District_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="Furnishing_Importance">Importance of Furnishing feature (Default=Normal)</label>
+				<select style="font-size:18px", id="Furnishing_Importance" name="Furnishing_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="Lease_Importance">Importance of Lease feature (Default=Normal)</label>
+				<select style="font-size:18px", id="Lease_Importance" name="Lease_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				<br>
+				<label for="Amenities_Importance">Importance of Amenities feature (Default=Normal)</label>
+				<select style="font-size:18px", id="Amenities_Importance" name="Amenities_Importance">
+					<option value=1>Normal</option>
+					<option value=0.005>NotRelevant</option>
+					<option value=0.25>VeryLow</option>
+					<option value=0.5>Low</option>
+					<option value=2>High</option>
+					<option value=4>VeryHigh</option>
+					<option value=200>AsCloseAsPossible</option>
+					<option value=10000>MustBeSimilar</option>
+				</select>
+				
+				<h3 class="heading-3">Let's next input attributes of your proposed property (Required)</h3>
+
+				{{form3.ListingTitle_B.label}}
+				{{form3.ListingTitle_B(class_="input-text")}}
+				<br>
+				{{form3.Area_Sqft_B.label}}
+				{{form3.Area_Sqft_B(class_="input-text")}}
+				<br>
+				{{form3.Price_psf_B.label}}
+				{{form3.Price_psf_B(class_="input-text")}}
+				<br>
+				{{form3.RentalRate.label}}
+				{{form3.RentalRate(class_="input-text")}}
+				<br>
+				{{form3.Amenities_B.label}}
+				{{form3.Amenities_B(class_="input-text")}}
+				<br>
+				<label for="NumBeds_B">Number of bedrooms of your property</label>
+				<select style="font-size:18px", id="NumBeds_B" name="NumBeds_B">
+					<option value=1>1</option>
+					<option value=2>2</option>
+					<option value=3>3</option>
+					<option value=4>4</option>
+					<option value=5>5</option>
+					<option value=6>6</option>
+					<option value=7>7</option>
+					<option value=8>8</option>
+				</select>
+				<br>
+				<label for="District_B">District of your property</label>
+				<select style="font-size:18px", id="District_B" name="District_B">
+					<option value="01">01</option>
+					<option value="02">02</option>
+					<option value="03">03</option>
+					<option value="04">04</option>
+					<option value="05">05</option>
+					<option value="06">06</option>
+					<option value="07">07</option>
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+					<option value="19">19</option>
+					<option value="20">20</option>
+					<option value="21">21</option>
+					<option value="22">22</option>
+					<option value="23">23</option>
+					<option value="24">24</option>
+					<option value="25">25</option>
+					<option value="26">26</option>
+					<option value="27">27</option>
+					<option value="28">28</option>
+					<option value="No Mention">Unknown/NoAnswer</option>
+				</select>
+				<br>
+				<label for="Furnishing_B">Furnishing state of your property</label>
+				<select style="font-size:18px", id="Furnishing_B" name="Furnishing_B">
+					<option value="Fully Furnished">Fully Furnished</option>
+					<option value="Partially Furnished">Partially Furnished</option>
+					<option value="Unfurnished">Unfurnished</option>
+					<option value="Flexible">Flexible</option>
+					<option value="No Mention">Unknown/NoAnswer</option>
+				</select>
+				<br>
+				<label for="Leasedur_B">Lease duration of your property </label>
+				<select style="font-size:18px", id="Leasedur_B" name="Leasedur_B">
+					<option value="6 months">6 months</option>
+					<option value="12 months">12 months</option>
+					<option value="24 months">24 months</option>
+					<option value="Flexible">Flexible</option>
+				</select>
+				<br>
+				<label for="PropertyType_B">Type of your property</label>
+				<select style="font-size:18px", id="PropertyType_B" name="PropertyType_B">
+					<option value="condo">condo</option>
+					<option value="landed">landed</option>
+					<option value="hdb">hdb</option>
+				</select>
+				<p>{{ form3.submit_B(class_="button") }}</p>
+			</center>
+		</form>
+	</div>  
+	{% endblock %}
+</body>
+
+</html>
