@@ -61,13 +61,13 @@ def run_spark_session(regress_df_final, model_choice, model_dict):
 			maxDepth = model_dict['MaxDepth']
 			feature_strat = model_dict['FeatureStrat']
 			forest = SparkForest(labelCol='RentalRate',featuresCol='features',numTrees=numTrees, maxDepth=maxDepth, 
-								maxMemoryInMB=1024, featureSubsetStrategy=feature_strat, predictionCol = 'RentalRate Prediction in SGD')
+								maxMemoryInMB=2056, featureSubsetStrategy=feature_strat, predictionCol = 'RentalRate Prediction in SGD')
 			fitted_model = forest.fit(trainset)
 		elif model_choice == 'GBT':
 			numTrees = model_dict['NumTrees']
 			maxDepth = model_dict['MaxDepth']
 			gbt = SparkGBT(labelCol='RentalRate',featuresCol='features',maxIter=numTrees, maxDepth=maxDepth, 
-										  maxMemoryInMB=1024, predictionCol = 'RentalRate Prediction in SGD')
+										  maxMemoryInMB=2056, predictionCol = 'RentalRate Prediction in SGD')
 			fitted_model = gbt.fit(trainset)
 		#print('Model is done being fitted!')
 		#print('\n****************************************************************************************\n')
