@@ -138,13 +138,11 @@
 			<input type="hidden" name="form_name" value="form4">
 			<center><h3 class="heading-3">Click {{form4.submit_chart(class_="button")}} to see interactive charts</h3></center>
 		</form>
-		{% block chart %}
-		<h2>
-			<center class="heading-2">Scatter Plot of all numerical features for all property types</center>
-		</h2>
-		<center><img src={{img_src|safe}}></center>
-		<br>
-		{% endblock %}
+		<form method="post" action="/seaborn">
+			<h3>-----------------------------------------------------------------------------------------</h3>
+			<h3>A Static Scatter Plot of Numerical Attributes Grouped By Property Type Is Also Available</h3>
+			<h3 class="heading-3-impt-green">Click <button style="font-size:20px">Here</button> to Check Out The Plot</h3>
+		</form>
 	</div>
 	************************************************************************************************************************************************************************************************************************************
 	<h2 class="heading-2">MINI SECTION</h2>

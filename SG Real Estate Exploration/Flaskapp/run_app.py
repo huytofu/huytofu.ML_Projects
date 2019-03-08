@@ -69,7 +69,6 @@ class ReusableForm_SimFilter(Form):
 
 full_df = pd.read_csv('Cleaned_combined_Listings.csv')
 pd.set_option('display.max_colwidth',200)
-graph0=None
 graph1=None
 graph2=None
 graph3=None
@@ -83,17 +82,17 @@ img_src='static/nothing_here.png'
 
 application = Flask(__name__)
 application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app_dash = dash.Dash(__name__, server=application, url_base_pathname = '/dashboard/')
+app_dash.layout = html.Div(dcc.Markdown("# Nothing Here!"))
 
 @application.route('/', methods=['POST','GET'])
 def home():
 	global full_df
 	global new_df
-	global img_src
 	global include_amen
 	global plot_charts_cue
 	global display_text
 	global display_thankyou
-	global graph0		
 	global graph1		
 	global graph2		
 	global graph3		
@@ -121,9 +120,6 @@ def home():
 				dict0['HDB_Rent_Max'] = float(request.form['HDB_Rent_Max'])
 				
 				new_df = modify_df(full_df, dict0)
-				graph0 = scatter.plot_static_scatter(new_df)
-				graph0.savefig('static/scatter.png')
-				img_src = 'static/scatter.png'
 				graph1 = scatter.plot_interactive_scatter(new_df, a=property_type, b=feature_1, c=feature_2)
 				graph2 = barchart.plot_numbeds(new_df,d=feature_3)
 				graph3 = barchart.plot_furnishing(new_df, d=feature_3)
@@ -139,8 +135,7 @@ def home():
 													HDB_Rent_Max=dict0['HDB_Rent_Max'],
 													plot_charts_cue=plot_charts_cue,
 													display_text=display_text,
-													display_thankyou=display_thankyou,
-													img_src=img_src) 
+													display_thankyou=display_thankyou) 
 
 		elif request.form['form_name'] == 'form_amen':
 			include_amen = request.form['include_amen']
@@ -261,16 +256,12 @@ def home():
 	return render_template('index.html', form1=form1, form2=form2, form3=form3, form4=form4, form_amen=form_amen,
 										plot_charts_cue=plot_charts_cue,
 										display_text=display_text,
-										display_thankyou=display_thankyou,
-										img_src=img_src)
+										display_thankyou=display_thankyou)
 
-app_dash = dash.Dash(__name__, server=application, url_base_pathname = '/dashboard/')
-app_dash.layout = html.Div(dcc.Markdown("# Nothing Here!"))
 @application.route('/hahaha', methods=['POST','GET'])
 def show_charts():	
 	global plot_charts_cue
 	global app_dash
-	global graph0		
 	global graph1		
 	global graph2		
 	global graph3		
@@ -280,6 +271,19 @@ def show_charts():
 								children=[graph1, graph2, graph3, graph4])
 		return flask.redirect('/dashboard/')
 	else: return render_template('chart_error.html')
+
+@application.route('/seaborn', methods=['POST','GET'])
+def seaborn():
+	global img_src
+	global new_df
+	global plot_charts_cue
+	if (request.method == 'POST') and plot_charts_cue:
+		graph0 = scatter.plot_static_scatter(new_df)
+		graph0.savefig('static/scatter.png')
+		img_src = 'static/scatter.png'
+		return render_template('seaborn_chart.html', img_src=img_src)
+	else: return render_template('chart_error.html')
+
 '''
 @application.after_request
 def no_cache(response):
