@@ -8,7 +8,7 @@ import predict_rent as pr
 import similarity_filter as sf
 import dash_html_components as html
 import dash_core_components as dcc
-from flask import Flask, request, render_template, make_response
+from flask import Flask, request, render_template
 from wtforms import Form, validators
 from wtforms.fields import FloatField, IntegerField, TextField, SubmitField
 from utils import create_final_df, modify_df
